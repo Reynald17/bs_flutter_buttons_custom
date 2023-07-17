@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class BsDropdownButton extends StatefulWidget {
-
   const BsDropdownButton({
     Key? key,
     required this.toggleMenu,
@@ -40,7 +39,6 @@ class BsDropdownButton extends StatefulWidget {
 }
 
 class _BsDropdownButtonState extends State<BsDropdownButton> {
-
   GlobalKey<State> _key = GlobalKey<State>();
 
   bool isOpen = false;
@@ -65,44 +63,50 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
   }
 
   void _onFocus() {
-    if (_focusNode.hasFocus && !widget.disabled) _open();
-    else if(!_focusNode.hasFocus) _close();
+    if (_focusNode.hasFocus && !widget.disabled)
+      _open();
+    else if (!_focusNode.hasFocus) _close();
   }
 
   void _onKeyPressed(RawKeyEvent event) {
-    if(event.logicalKey == LogicalKeyboardKey.escape)
-      _close();
+    if (event.logicalKey == LogicalKeyboardKey.escape) _close();
   }
 
   void updateState(Function function) {
-    if(mounted)
+    if (mounted)
       setState(() {
         function();
       });
   }
 
   void toggle() {
-    if(isOpen) _close();
-    else _focusNode.requestFocus();
+    if (isOpen)
+      _close();
+    else
+      _focusNode.requestFocus();
   }
 
   void _open() {
     OverlayDropdownButton.removeAll();
 
-    BsOverlayEntry overlayEntry = OverlayDropdownButton.add(OverlayEntry(builder: (context) => BsDropdownWrapper(
-      containerKey: _key,
-      containerMargin: widget.margin != null ? widget.margin! : EdgeInsets.zero,
-      layerLink: _layerLink,
-      dropdownMenu: widget.dropdownMenu,
-      dropdownDirection: widget.dropdownDirection,
-      dropdownMenuStyle: widget.dropdownMenuStyle,
-      dropdownMenuSize: widget.dropdownMenuSize,
-    )), () => updateState(() {
-      isOpen = false;
-      _focusNode.unfocus();
-    }));
+    BsOverlayEntry overlayEntry = OverlayDropdownButton.add(
+        OverlayEntry(
+            builder: (context) => BsDropdownWrapper(
+                  containerKey: _key,
+                  containerMargin:
+                      widget.margin != null ? widget.margin! : EdgeInsets.zero,
+                  layerLink: _layerLink,
+                  dropdownMenu: widget.dropdownMenu,
+                  dropdownDirection: widget.dropdownDirection,
+                  dropdownMenuStyle: widget.dropdownMenuStyle,
+                  dropdownMenuSize: widget.dropdownMenuSize,
+                )),
+        () => updateState(() {
+              isOpen = false;
+              _focusNode.unfocus();
+            }));
 
-    Overlay.of(context)!.insert(overlayEntry.overlayEntry);
+    Overlay.of(context).insert(overlayEntry.overlayEntry);
 
     updateState(() => isOpen = true);
   }
@@ -119,7 +123,7 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
     return WillPopScope(
       onWillPop: () async {
         bool returned = true;
-        if(isOpen) {
+        if (isOpen) {
           _close();
           returned = false;
         }
